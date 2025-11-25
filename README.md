@@ -1,0 +1,75 @@
+# Text2Cypher-2024v1 Dataset Cleanup
+
+A Python toolkit was developed for cleaning the Neo4j-created [Text2Cypher-2024v1](https://huggingface.co/datasets/neo4j/text2cypher-2024v1) dataset hosted in HuggingFace.  
+This project provides a way to clean dataset splits using a local Large Language Model (LLM). (Please prepare your own GPU resources and download LLM if you want to run this project on your own.)
+
+Paper that introduces Text2Cypher-2024v1 dataset is attached [here](https://arxiv.org/abs/2412.10064).
+
+Cleaned splits are available to download (using Qwen/Qwen3-4B-Instruct-2507 as router, you can choose whatever LLM you like if you don't like my choice):
+- [Cleaned Test Split](https://drive.google.com/file/d/1esMm1IVkmK5xK9hD-vvn6rzV8WYzF0CE/view?usp=sharing)
+- [Cleaned Train Split](https://drive.google.com/file/d/1Tkqv39q_18w-yVBvAV53wcxWRjLI9Ier/view?usp=drive_link)
+
+(These are all links to parquet files stored in my Google drive. I promise it is safe.)
+
+## Features
+
+- **Singleton**: For entires with no database alias specified (in other words, no corresponding neo4j demo database), a pre-selected neo4j driver would handle these with limited functionality. A simple singleton pattern was implemented.
+- **Structured LLM Output**: A project, [Outlines](https://github.com/dottxt-ai/outlines), provides the best approach of structured LLM output. Can't thank them enough.
+- **Structure of Pipeline**: A giant for loop plus a function that looks at every single entry.
+
+(I just realized I should have used CyVer when i was writing these few lines. But i don't think it could improve a lot after i read their docs carefully. A good open source project btw.)
+
+## Prerequisites
+
+- Python 3.11+
+- Access to HuggingFace datasets & language models
+- uv
+
+## Installation & Usage
+
+### 1. Clone and Set Up Environment
+
+```bash
+# Clone the repository
+git clone https://github.com/mgozsoy-neo4j/text2cypher-cleanup.git
+cd text2cypher-cleanup
+
+# Install dependencies using uv
+uv sync
+```
+
+### 2. Run the Cleanup Tool
+
+Navigate to the main module directory and run the script:
+
+```bash
+cd src/text2cypher_cleanup
+uv run main.py
+```
+
+You will be prompted to:
+1. Enter the **dataset split** you want to clean (e.g., `train`, or `test`)
+2. Provide the **path to your local LLM** (Using API is probably a bad idea. Even the cheapest API like DeepSeek could clear your money)
+
+**After** processing, a parquet file will be saved in output folder (`output/`) (Github ignores empty folder so i can't upload empty 'output' folder to repo).
+
+## Contributing
+
+Please see our [Contributing Guidelines](CONTRIBUTING.md) for details.
+
+## Dataset Information
+
+The cleaned neo4j/text2cypher-2024v1 dataset contains natural language queries paired with their corresponding Cypher graph database queries and relevant schema, database alias.
+
+One of the authors has run this project to clean neo4j/text2cypher-2024v1 dataset using **Qwen/Qwen3-4B-Instruct-2507** and H100s.
+
+## License
+
+This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENSE) file for details.
+
+## Acknowledgments
+
+- [Neo4j](https://neo4j.com/) and its scientists (notably, Makbule Ozsoy) for producing the original Text2Cypher-2024v1 dataset
+- [HuggingFace](https://huggingface.co/) for hosting the dataset
+- [uv](https://github.com/astral-sh/uv) for fast Python package management
+- Jiju Poovvancheri for providing access to server of GPUs. Without his support, it would not be possible for me to do all these things
