@@ -3,12 +3,10 @@ from typing import LiteralString, Optional, Union, cast
 import neo4j
 import pandas as pd
 from utils.constants import (
+    FULL_SCHEMA_CYPHER_QUERY,
     NEO4JLABS_DEMO_URI,
     QUERY_RUN_EXCEPTION,
     SCHEMA,
-    nodes_props_typesOfProps_query,
-    rels_props_typesOfProps_query,
-    rels_directions_query,
 )
 from utils.logger import logger_factory
 
@@ -105,12 +103,12 @@ class Neo4jConnector:
                     cast(LiteralString, cypher_query),
                     timeout=self.neo4j_timeout_in_seconds,
                 )
-                result = session.run(query=query, parameters=params)
-                return ", ".join([str(r.values()[0]) for r in result])
+                return session.run(query=query, parameters=params).data()[0][
+                    "FullSchema"
+                ]
 
 
 class Neo4jConnectorSingleton:
-
     _instance = None
 
     @classmethod
@@ -126,7 +124,6 @@ class Neo4jConnectorSingleton:
 
 
 class Neo4JDemoDatabases:
-
     LOGGER = logger_factory(__name__)
 
     db_alias_2_schema = {}
@@ -210,16 +207,11 @@ class Neo4JDemoDatabases:
 
     @staticmethod
     def schema_update(db_alias: str, index, dataframe: pd.DataFrame):
-
         if db_alias not in Neo4JDemoDatabases.db_alias_2_schema:
             neo4j_connector = Neo4JDemoDatabases.convert_db_alias_to_neo4jconnector(
                 db_alias=db_alias
             )
-            updated_schema = (
-                f"""Nodes, their properties, types of properties:\n{neo4j_connector.execute_query_with_gql_objects(nodes_props_typesOfProps_query, for_schema=True)}\n"""
-                f"""Relationships, their properties, types of properties:\n{neo4j_connector.execute_query_with_gql_objects(rels_props_typesOfProps_query, for_schema=True)}\n"""
-                f"""Relationships' directions:\n{neo4j_connector.execute_query_with_gql_objects(rels_directions_query, for_schema=True)}\n"""
-            )
+            updated_schema = f"{neo4j_connector.execute_query_with_gql_objects(FULL_SCHEMA_CYPHER_QUERY, for_schema=True)}"
             Neo4JDemoDatabases.db_alias_2_schema[db_alias] = updated_schema
         dataframe.loc[index, SCHEMA] = Neo4JDemoDatabases.db_alias_2_schema[db_alias]
 

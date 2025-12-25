@@ -56,7 +56,6 @@ def only_contains_latin_characters_helper(row: pd.Series):
 def execution_for_row_with_alias_helper(
     row: pd.Series, neo4j_connector: Neo4jConnector
 ):
-
     global logger
     instance_id = row[INSTANCE_ID]
     cypher_query = row[CYPHER]
@@ -132,7 +131,6 @@ def execution_for_row_with_no_alias_helper(
 
 
 class Detector:
-
     def __init__(self):
         self.logger = logger
         super().__init__()
@@ -144,7 +142,6 @@ class Detector:
         index,
         dataframe: pd.DataFrame,
     ) -> None:
-
         instance_id = row[INSTANCE_ID]
         db_alias = row[DATABASE_REFERENCE_ALIAS]
         cypher_query = row[CYPHER]
@@ -156,7 +153,6 @@ class Detector:
         If the database_reference_alias is null in parquet file, it would be none in dataframe.
         """
         if db_alias is None:
-
             self.logger.debug(f"db_alias is None for instance {instance_id}")
 
             only_contains_latin_characters_helper(row=row)

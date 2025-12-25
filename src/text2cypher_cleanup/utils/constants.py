@@ -12,24 +12,33 @@ QUERY_RUN_EXCEPTION = "query_run_exception"
 # URI for neo4j demo databases
 NEO4JLABS_DEMO_URI = "neo4j+s://demo.neo4jlabs.com"
 
-# Queries to be executed to produce standardized schema
-nodes_props_typesOfProps_query = r"""
-CALL apoc.meta.data()
-YIELD label, other, elementType, type, property
-WHERE NOT type = "RELATIONSHIP" AND elementType = "node"
-WITH label AS nodeLabels, collect({property:property, type:type}) AS properties
-RETURN {label: nodeLabels, properties: properties}
-"""
-rels_directions_query = r"""
-CALL apoc.meta.data()
-YIELD label, other, elementType, type, property
-WHERE type = "RELATIONSHIP" AND elementType = "node"
-RETURN {source: label, relationship: property, target: other}
-"""
-rels_props_typesOfProps_query = r"""
-CALL apoc.meta.data()
-YIELD label, other, elementType, type, property
-WHERE NOT type = "RELATIONSHIP" AND elementType = "relationship"
-WITH label AS nodeLabels, collect({property:property, type:type}) AS properties
-RETURN {relationship: nodeLabels, properties: properties}
+FULL_SCHEMA_CYPHER_QUERY = r"""
+CALL {
+    CALL db.schema.nodeTypeProperties() YIELD nodeLabels, propertyName, propertyTypes
+    WITH nodeLabels[0] AS label, propertyName + ": " + propertyTypes[0] AS prop
+    WITH label, collect(prop) AS props
+    RETURN "Nodes' properties and types of properties:\n" + apoc.text.join(collect(label + " {" + apoc.text.join(props, ", ") + "}"), "\n") AS nodeSchema
+}
+CALL {
+    CALL db.schema.relTypeProperties() YIELD relType, propertyName, propertyTypes
+    WITH relType, propertyName, propertyTypes 
+    WHERE propertyName IS NOT NULL
+    WITH relType, propertyName + ": " + propertyTypes[0] AS prop
+    WITH relType, collect(prop) AS props
+    // Clean up the relationship type string (removes ':' and backticks)
+    WITH replace(replace(relType, ":", ""), "`", "") AS typeName, props
+    WITH typeName + " {" + apoc.text.join(props, ", ") + "}" AS relDefinition
+    RETURN "Relationships' properties and types of properties:\n" + apoc.text.join(collect(relDefinition), "\n") AS relPropSchema
+}
+CALL {
+    MATCH (n)-[r]->(m)
+    WITH DISTINCT labels(n)[0] AS s, type(r) AS t, labels(m)[0] AS e
+    RETURN "The relationships:\n" + apoc.text.join(collect("(:" + s + ")-[:" + t + "]->(:" + e + ")"), "\n") AS patternSchema
+}
+WITH nodeSchema, patternSchema, 
+     CASE 
+        WHEN relPropSchema = "Relationship properties:\n" THEN "" 
+        ELSE relPropSchema + "\n\n" 
+     END AS finalRelProps
+RETURN nodeSchema + "\n\n" + finalRelProps + patternSchema AS FullSchema
 """
