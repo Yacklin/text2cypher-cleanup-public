@@ -28,7 +28,7 @@ Cleaned splits which are further adjusted for training and evaluation are availa
 ```bash
 # Clone the repository
 git clone https://github.com/Yacklin/text2cypher-cleanup-public.git
-cd text2cypher-cleanup
+cd text2cypher-cleanup-public
 
 # Install dependencies using uv
 uv sync
@@ -45,7 +45,7 @@ uv run main.py
 
 You will be prompted to:
 1. Enter the **dataset split** you want to clean (e.g., `train`, or `test`)
-2. Provide the **path to your local LLM** (Using API is probably a bad idea. Even the cheapest API like DeepSeek could clear your money)
+2. Provide the **path to your local LLM** (Using API is probably a bad idea. Even the cheapest API like DeepSeek could make you run out of money)
 
 **After** processing, a parquet file will be saved in output folder (`output/`) (Github ignores empty folder so i can't upload empty 'output' folder to repo).
 
@@ -55,7 +55,7 @@ Please see our [Contributing Guidelines](CONTRIBUTING.md) for details.
 
 ## Dataset Information
 
-The cleaned neo4j/text2cypher-2024v1 dataset contains natural language queries paired with their corresponding Cypher graph database queries and relevant schema, database alias.
+The cleaned neo4j/text2cypher-2024v1 dataset contains natural language questions, corresponding Cypher queries and relevant schema.
 
 One of the authors has run this project to clean neo4j/text2cypher-2024v1 dataset using **Qwen/Qwen3-4B-Instruct-2507** and H100s.
 
