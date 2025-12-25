@@ -1,11 +1,11 @@
 # Text2Cypher-2024v1 Dataset Cleanup
 
-This Python project was developed for cleaning a Neo4j-created [Text2Cypher-2024v1](https://huggingface.co/datasets/neo4j/text2cypher-2024v1) dataset hosted in HuggingFace.  
-This project provides a way to clean dataset splits using a local decoder-only Large Language Model (LLM). (Please prepare your own GPU resources and download LLM if you want to run this project on your own.)
+This Python project was developed for cleaning a Neo4j-created [Text2Cypher-2024v1](https://huggingface.co/datasets/neo4j/text2cypher-2024v1) dataset, which is hosted in HuggingFace.  
+This project automates the process of cleaning dataset splits using a local decoder-only Large Language Model (LLM). (Please prepare your own GPU resources and download LLM if you want to run this project on your own.)
 
 Paper that introduces Text2Cypher-2024v1 dataset can be found [here](https://arxiv.org/abs/2412.10064).
 
-Cleaned splits which are further adjusted for training and evaluation are available to download in the folder /data of this repository.
+Cleaned splits, which are further adjusted for training and evaluation, are available to download from the folder /data of this repository.
 
 ## Features
 
