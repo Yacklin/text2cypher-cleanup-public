@@ -5,11 +5,7 @@ This project provides a way to clean dataset splits using a local Large Language
 
 Paper that introduces Text2Cypher-2024v1 dataset is attached [here](https://arxiv.org/abs/2412.10064).
 
-Cleaned splits are available to download (using Qwen/Qwen3-4B-Instruct-2507 as router, you can choose whatever LLM you like if you don't like my choice):
-- [Cleaned Test Split](https://drive.google.com/file/d/1esMm1IVkmK5xK9hD-vvn6rzV8WYzF0CE/view?usp=sharing)
-- [Cleaned Train Split](https://drive.google.com/file/d/1Tkqv39q_18w-yVBvAV53wcxWRjLI9Ier/view?usp=drive_link)
-
-(These are all links to parquet files stored in my Google drive. I promise it is safe.)
+Cleaned splits that are further adjusted for training and evaluation are available to download in folder /data of this repository.
 
 ## Features
 
