@@ -1,9 +1,9 @@
 # Text2Cypher-2024v1 Dataset Cleanup
 
-A Python project was developed for cleaning the Neo4j-created [Text2Cypher-2024v1](https://huggingface.co/datasets/neo4j/text2cypher-2024v1) dataset hosted in HuggingFace.  
+This Python project was developed for cleaning a Neo4j-created [Text2Cypher-2024v1](https://huggingface.co/datasets/neo4j/text2cypher-2024v1) dataset hosted in HuggingFace.  
 This project provides a way to clean dataset splits using a local decoder-only Large Language Model (LLM). (Please prepare your own GPU resources and download LLM if you want to run this project on your own.)
 
-Paper that introduces Text2Cypher-2024v1 dataset is attached [here](https://arxiv.org/abs/2412.10064).
+Paper that introduces Text2Cypher-2024v1 dataset can be found [here](https://arxiv.org/abs/2412.10064).
 
 Cleaned splits which are further adjusted for training and evaluation are available to download in the folder /data of this repository.
 
@@ -11,7 +11,7 @@ Cleaned splits which are further adjusted for training and evaluation are availa
 
 - **Singleton**: For entires with no database alias specified (in other words, no corresponding neo4j demo database), a pre-selected neo4j driver would handle these with limited functionality. A simple singleton pattern was implemented.
 - **Structured LLM Output**: A project, [Outlines](https://github.com/dottxt-ai/outlines), provides the best approach of structured LLM output. Can't thank them enough.
-- **Structure of Pipeline**: A giant for loop plus a function that looks at every single entry.
+- **Structure of Pipeline**: A giant for loop plus a function that looks into every single entry.
 
 (I just realized I should have used CyVer when i was writing these few lines. But i don't think it could improve a lot after i read their docs carefully. A good open source project btw.)
 
@@ -27,7 +27,7 @@ Cleaned splits which are further adjusted for training and evaluation are availa
 
 ```bash
 # Clone the repository
-git clone https://github.com/mgozsoy-neo4j/text2cypher-cleanup.git
+git clone https://github.com/Yacklin/text2cypher-cleanup-public.git
 cd text2cypher-cleanup
 
 # Install dependencies using uv
@@ -65,7 +65,5 @@ This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENS
 
 ## Acknowledgments
 
-- [Neo4j](https://neo4j.com/) and its scientists (notably, Makbule Ozsoy) for producing the original Text2Cypher-2024v1 dataset
-- [HuggingFace](https://huggingface.co/) for hosting the dataset
-- [uv](https://github.com/astral-sh/uv) for fast Python package management
-- Jiju Poovvancheri for providing access to server of GPUs. Without his support, it would not be possible for me to do all these things
+- [Neo4j](https://neo4j.com/) and its scientists (notably, Makbule Ozsoy) for producing the original Text2Cypher-2024v1 dataset.
+- Jiju Poovvancheri for providing me access to server of GPUs. Without his support, it would not be possible for me to do all these things.
