@@ -61,8 +61,7 @@ class TestNeo4jDemoDB(unittest.TestCase):
 class TestConstants(unittest.TestCase):
     def test_constants_exist(self):
         self.assertEqual(constants.ISSUES_COLUMN_NAME, "issues")
-        self.assertIn("CALL apoc.meta.data()", constants.nodes_props_typesOfProps_query)
-        self.assertIn("RELATIONSHIP", constants.rels_directions_query)
+        self.assertIn("CALL apoc.meta.data()", constants.FULL_SCHEMA_CYPHER_QUERY)
 
 
 class TestLogger(unittest.TestCase):
