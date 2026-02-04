@@ -35,10 +35,6 @@ CALL {
     WITH DISTINCT labels(n)[0] AS s, type(r) AS t, labels(m)[0] AS e
     RETURN "The relationships:\n" + apoc.text.join(collect("(:" + s + ")-[:" + t + "]->(:" + e + ")"), "\n") AS patternSchema
 }
-WITH nodeSchema, patternSchema, 
-     CASE 
-        WHEN relPropSchema = "Relationship properties:\n" THEN "" 
-        ELSE relPropSchema + "\n\n" 
-     END AS finalRelProps
+WITH nodeSchema, patternSchema,relPropSchema + "\n\n" AS finalRelProps
 RETURN nodeSchema + "\n\n" + finalRelProps + patternSchema AS FullSchema
 """
